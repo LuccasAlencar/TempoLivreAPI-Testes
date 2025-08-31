@@ -1,0 +1,6 @@
+@TempoLivreAPI_HostAddress = http://localhost:5219
+
+GET {{TempoLivreAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
