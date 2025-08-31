@@ -18,7 +18,11 @@ namespace TempoLivreAPI.Endpoints
                         Id = a.Id,
                         Nome = a.Nome,
                         Endereco = a.Endereco,
-                        Capacidade = a.Capacidade
+                        Latitude = a.Latitude,
+                        Longitude = a.Longitude,
+                        CapacidadeMax = a.CapacidadeMax,
+                        DisponibilidadeAtual = a.DisponibilidadeAtual,
+                        Contato = a.Contato
                     })
                     .ToListAsync();
                 return Results.Ok(items);
@@ -38,7 +42,11 @@ namespace TempoLivreAPI.Endpoints
                         Id = a.Id,
                         Nome = a.Nome,
                         Endereco = a.Endereco,
-                        Capacidade = a.Capacidade
+                        Latitude = a.Latitude,
+                        Longitude = a.Longitude,
+                        CapacidadeMax = a.CapacidadeMax,
+                        DisponibilidadeAtual = a.DisponibilidadeAtual,
+                        Contato = a.Contato
                     });
             })
             .WithName("GetAbrigoById")
@@ -53,7 +61,11 @@ namespace TempoLivreAPI.Endpoints
                 {
                     Nome = dto.Nome,
                     Endereco = dto.Endereco,
-                    Capacidade = dto.Capacidade
+                    Latitude = dto.Latitude,
+                    Longitude = dto.Longitude,
+                    CapacidadeMax = dto.CapacidadeMax,
+                    DisponibilidadeAtual = dto.DisponibilidadeAtual,
+                    Contato = dto.Contato
                 };
                 context.Abrigos.Add(a);
                 await context.SaveChangesAsync();
@@ -63,7 +75,11 @@ namespace TempoLivreAPI.Endpoints
                     Id = a.Id,
                     Nome = a.Nome,
                     Endereco = a.Endereco,
-                    Capacidade = a.Capacidade
+                    Latitude = a.Latitude,
+                    Longitude = a.Longitude,
+                    CapacidadeMax = a.CapacidadeMax,
+                    DisponibilidadeAtual = a.DisponibilidadeAtual,
+                    Contato = a.Contato
                 };
                 return Results.Created($"/abrigos/{a.Id}", readDto);
             })
@@ -80,7 +96,11 @@ namespace TempoLivreAPI.Endpoints
 
                 a.Nome = dto.Nome;
                 a.Endereco = dto.Endereco;
-                a.Capacidade = dto.Capacidade;
+                a.Latitude = dto.Latitude;
+                a.Longitude = dto.Longitude;
+                a.CapacidadeMax = dto.CapacidadeMax;
+                a.DisponibilidadeAtual = dto.DisponibilidadeAtual;
+                a.Contato = dto.Contato;
                 await context.SaveChangesAsync();
 
                 return Results.NoContent();

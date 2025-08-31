@@ -13,19 +13,23 @@ namespace TempoLivreAPI.Endpoints
             app.MapGet("/ocorrencias", async (AppDbContext context) =>
             {
                 var items = await context.Ocorrencias
-                    .Select(o => new OcorrenciaReadDto
+                    .Select(o => new OcorrenciaColaborativaReadDto
                     {
                         Id = o.Id,
                         UsuarioId = o.UsuarioId,
+                        TipoOcorrencia = o.TipoOcorrencia,
                         Descricao = o.Descricao,
-                        DataHora = o.DataHora
+                        Latitude = o.Latitude,
+                        Longitude = o.Longitude,
+                        DataEnvio = o.DataEnvio,
+                        Status = o.Status
                     })
                     .ToListAsync();
                 return Results.Ok(items);
             })
             .WithName("GetOcorrencias")
             .WithTags(Constants.Ocorrencias)
-            .Produces<List<OcorrenciaReadDto>>(StatusCodes.Status200OK)
+            .Produces<List<OcorrenciaColaborativaReadDto>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
             app.MapGet("/ocorrencias/{id}", async (int id, AppDbContext context) =>
@@ -33,59 +37,75 @@ namespace TempoLivreAPI.Endpoints
                 var o = await context.Ocorrencias.FindAsync(id);
                 return o == null
                     ? Results.NotFound()
-                    : Results.Ok(new OcorrenciaReadDto
+                    : Results.Ok(new OcorrenciaColaborativaReadDto
                     {
                         Id = o.Id,
                         UsuarioId = o.UsuarioId,
+                        TipoOcorrencia = o.TipoOcorrencia,
                         Descricao = o.Descricao,
-                        DataHora = o.DataHora
+                        Latitude = o.Latitude,
+                        Longitude = o.Longitude,
+                        DataEnvio = o.DataEnvio,
+                        Status = o.Status
                     });
             })
             .WithName("GetOcorrenciaById")
             .WithTags(Constants.Ocorrencias)
-            .Produces<OcorrenciaReadDto>(StatusCodes.Status200OK)
+            .Produces<OcorrenciaColaborativaReadDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapPost("/ocorrencias", async (OcorrenciaCreateDto dto, AppDbContext context) =>
+            app.MapPost("/ocorrencias", async (OcorrenciaColaborativaCreateDto dto, AppDbContext context) =>
             {
-                var o = new Ocorrencia
+                var o = new OcorrenciaColaborativa
                 {
                     UsuarioId = dto.UsuarioId,
+                    TipoOcorrencia = dto.TipoOcorrencia,
                     Descricao = dto.Descricao,
-                    DataHora = DateTime.UtcNow
+                    Latitude = dto.Latitude,
+                    Longitude = dto.Longitude,
+                    DataEnvio = DateTime.UtcNow,
+                    Status = dto.Status ?? "pendente"
                 };
                 context.Ocorrencias.Add(o);
                 await context.SaveChangesAsync();
 
-                var readDto = new OcorrenciaReadDto
+                var readDto = new OcorrenciaColaborativaReadDto
                 {
                     Id = o.Id,
                     UsuarioId = o.UsuarioId,
+                    TipoOcorrencia = o.TipoOcorrencia,
                     Descricao = o.Descricao,
-                    DataHora = o.DataHora
+                    Latitude = o.Latitude,
+                    Longitude = o.Longitude,
+                    DataEnvio = o.DataEnvio,
+                    Status = o.Status
                 };
                 return Results.Created($"/ocorrencias/{o.Id}", readDto);
             })
             .WithName("CreateOcorrencia")
             .WithTags(Constants.Ocorrencias)
-            .Accepts<OcorrenciaCreateDto>(Constants.ApplicationJson)
-            .Produces<OcorrenciaReadDto>(StatusCodes.Status201Created)
+            .Accepts<OcorrenciaColaborativaCreateDto>(Constants.ApplicationJson)
+            .Produces<OcorrenciaColaborativaReadDto>(StatusCodes.Status201Created)
             .WithOpenApi();
 
-            app.MapPut("/ocorrencias/{id}", async (int id, OcorrenciaUpdateDto dto, AppDbContext context) =>
+            app.MapPut("/ocorrencias/{id}", async (int id, OcorrenciaColaborativaUpdateDto dto, AppDbContext context) =>
             {
                 var o = await context.Ocorrencias.FindAsync(id);
                 if (o == null) return Results.NotFound();
 
+                o.TipoOcorrencia = dto.TipoOcorrencia;
                 o.Descricao = dto.Descricao;
+                o.Latitude = dto.Latitude;
+                o.Longitude = dto.Longitude;
+                o.Status = dto.Status;
                 await context.SaveChangesAsync();
 
                 return Results.NoContent();
             })
             .WithName("UpdateOcorrencia")
             .WithTags(Constants.Ocorrencias)
-            .Accepts<OcorrenciaUpdateDto>(Constants.ApplicationJson)
+            .Accepts<OcorrenciaColaborativaUpdateDto>(Constants.ApplicationJson)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();

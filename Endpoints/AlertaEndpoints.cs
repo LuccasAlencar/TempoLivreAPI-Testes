@@ -16,10 +16,10 @@ namespace TempoLivreAPI.Endpoints
                     .Select(a => new AlertaReadDto
                     {
                         Id = a.Id,
-                        Tipo = a.Tipo,
-                        Descricao = a.Descricao,
-                        NivelSeveridade = a.NivelSeveridade,
-                        DataHoraCriacao = a.DataHoraCriacao
+                        Tipo = a.TipoEvento,
+                        Descricao = a.Mensagem,
+                        NivelSeveridade = a.NivelAlerta,
+                        DataHoraCriacao = a.DataEmissao
                     })
                     .ToListAsync();
                 return Results.Ok(items);
@@ -37,10 +37,10 @@ namespace TempoLivreAPI.Endpoints
                     : Results.Ok(new AlertaReadDto
                     {
                         Id = a.Id,
-                        Tipo = a.Tipo,
-                        Descricao = a.Descricao,
-                        NivelSeveridade = a.NivelSeveridade,
-                        DataHoraCriacao = a.DataHoraCriacao
+                        Tipo = a.TipoEvento,
+                        Descricao = a.Mensagem,
+                        NivelSeveridade = a.NivelAlerta,
+                        DataHoraCriacao = a.DataEmissao
                     });
             })
             .WithName("GetAlertaById")
@@ -53,10 +53,11 @@ namespace TempoLivreAPI.Endpoints
             {
                 var a = new Alerta
                 {
-                    Tipo = dto.Tipo,
-                    Descricao = dto.Descricao,
-                    NivelSeveridade = dto.NivelSeveridade,
-                    DataHoraCriacao = DateTime.UtcNow
+                    TipoEvento = dto.Tipo,
+                    Mensagem = dto.Descricao,
+                    NivelAlerta = dto.NivelSeveridade,
+                    DataEmissao = DateTime.UtcNow,
+                    Status = "ativo"
                 };
                 context.Alertas.Add(a);
                 await context.SaveChangesAsync();
@@ -64,10 +65,10 @@ namespace TempoLivreAPI.Endpoints
                 var readDto = new AlertaReadDto
                 {
                     Id = a.Id,
-                    Tipo = a.Tipo,
-                    Descricao = a.Descricao,
-                    NivelSeveridade = a.NivelSeveridade,
-                    DataHoraCriacao = a.DataHoraCriacao
+                    Tipo = a.TipoEvento,
+                    Descricao = a.Mensagem,
+                    NivelSeveridade = a.NivelAlerta,
+                    DataHoraCriacao = a.DataEmissao
                 };
                 return Results.Created($"/alertas/{a.Id}", readDto);
             })
@@ -82,9 +83,9 @@ namespace TempoLivreAPI.Endpoints
                 var a = await context.Alertas.FindAsync(id);
                 if (a == null) return Results.NotFound();
 
-                a.Tipo = dto.Tipo;
-                a.Descricao = dto.Descricao;
-                a.NivelSeveridade = dto.NivelSeveridade;
+                a.TipoEvento = dto.Tipo;
+                a.Mensagem = dto.Descricao;
+                a.NivelAlerta = dto.NivelSeveridade;
                 await context.SaveChangesAsync();
 
                 return Results.NoContent();

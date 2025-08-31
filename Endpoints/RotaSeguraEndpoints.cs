@@ -13,18 +13,23 @@ namespace TempoLivreAPI.Endpoints
             app.MapGet("/rotasseguras", async (AppDbContext context) =>
             {
                 var items = await context.RotasSeguras
-                    .Select(r => new RotaSeguraReadDto
+                    .Select(r => new RotasSegurasReadDto
                     {
                         Id = r.Id,
-                        Nome = r.Nome,
-                        Coordenadas = r.Coordenadas
+                        UsuarioId = r.UsuarioId,
+                        AbrigoDestinoId = r.AbrigoDestinoId,
+                        OrigemLatitude = r.OrigemLatitude,
+                        OrigemLongitude = r.OrigemLongitude,
+                        DestinoLatitude = r.DestinoLatitude,
+                        DestinoLongitude = r.DestinoLongitude,
+                        TipoRota = r.TipoRota
                     })
                     .ToListAsync();
                 return Results.Ok(items);
             })
             .WithName("GetRotasSeguras")
             .WithTags(Constants.RotasSeguras)
-            .Produces<List<RotaSeguraReadDto>>(StatusCodes.Status200OK)
+            .Produces<List<RotasSegurasReadDto>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
             app.MapGet("/rotasseguras/{id}", async (int id, AppDbContext context) =>
@@ -32,57 +37,75 @@ namespace TempoLivreAPI.Endpoints
                 var r = await context.RotasSeguras.FindAsync(id);
                 return r == null
                     ? Results.NotFound()
-                    : Results.Ok(new RotaSeguraReadDto
+                    : Results.Ok(new RotasSegurasReadDto
                     {
                         Id = r.Id,
-                        Nome = r.Nome,
-                        Coordenadas = r.Coordenadas
+                        UsuarioId = r.UsuarioId,
+                        AbrigoDestinoId = r.AbrigoDestinoId,
+                        OrigemLatitude = r.OrigemLatitude,
+                        OrigemLongitude = r.OrigemLongitude,
+                        DestinoLatitude = r.DestinoLatitude,
+                        DestinoLongitude = r.DestinoLongitude,
+                        TipoRota = r.TipoRota
                     });
             })
             .WithName("GetRotaSeguraById")
             .WithTags(Constants.RotasSeguras)
-            .Produces<RotaSeguraReadDto>(StatusCodes.Status200OK)
+            .Produces<RotasSegurasReadDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapPost("/rotasseguras", async (RotaSeguraCreateDto dto, AppDbContext context) =>
+            app.MapPost("/rotasseguras", async (RotasSegurasCreateDto dto, AppDbContext context) =>
             {
-                var r = new RotaSegura
+                var r = new RotasSeguras
                 {
-                    Nome = dto.Nome,
-                    Coordenadas = dto.Coordenadas
+                    UsuarioId = dto.UsuarioId,
+                    AbrigoDestinoId = dto.AbrigoDestinoId,
+                    OrigemLatitude = dto.OrigemLatitude,
+                    OrigemLongitude = dto.OrigemLongitude,
+                    DestinoLatitude = dto.DestinoLatitude,
+                    DestinoLongitude = dto.DestinoLongitude,
+                    TipoRota = dto.TipoRota
                 };
                 context.RotasSeguras.Add(r);
                 await context.SaveChangesAsync();
 
-                var readDto = new RotaSeguraReadDto
+                var readDto = new RotasSegurasReadDto
                 {
                     Id = r.Id,
-                    Nome = r.Nome,
-                    Coordenadas = r.Coordenadas
+                    UsuarioId = r.UsuarioId,
+                    AbrigoDestinoId = r.AbrigoDestinoId,
+                    OrigemLatitude = r.OrigemLatitude,
+                    OrigemLongitude = r.OrigemLongitude,
+                    DestinoLatitude = r.DestinoLatitude,
+                    DestinoLongitude = r.DestinoLongitude,
+                    TipoRota = r.TipoRota
                 };
                 return Results.Created($"/rotasseguras/{r.Id}", readDto);
             })
             .WithName("CreateRotaSegura")
             .WithTags(Constants.RotasSeguras)
-            .Accepts<RotaSeguraCreateDto>(Constants.ApplicationJson)
-            .Produces<RotaSeguraReadDto>(StatusCodes.Status201Created)
+            .Accepts<RotasSegurasCreateDto>(Constants.ApplicationJson)
+            .Produces<RotasSegurasReadDto>(StatusCodes.Status201Created)
             .WithOpenApi();
 
-            app.MapPut("/rotasseguras/{id}", async (int id, RotaSeguraUpdateDto dto, AppDbContext context) =>
+            app.MapPut("/rotasseguras/{id}", async (int id, RotasSegurasUpdateDto dto, AppDbContext context) =>
             {
                 var r = await context.RotasSeguras.FindAsync(id);
                 if (r == null) return Results.NotFound();
 
-                r.Nome = dto.Nome;
-                r.Coordenadas = dto.Coordenadas;
+                r.OrigemLatitude = dto.OrigemLatitude;
+                r.OrigemLongitude = dto.OrigemLongitude;
+                r.DestinoLatitude = dto.DestinoLatitude;
+                r.DestinoLongitude = dto.DestinoLongitude;
+                r.TipoRota = dto.TipoRota;
                 await context.SaveChangesAsync();
 
                 return Results.NoContent();
             })
             .WithName("UpdateRotaSegura")
             .WithTags(Constants.RotasSeguras)
-            .Accepts<RotaSeguraUpdateDto>(Constants.ApplicationJson)
+            .Accepts<RotasSegurasUpdateDto>(Constants.ApplicationJson)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();

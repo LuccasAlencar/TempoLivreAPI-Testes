@@ -1,0 +1,7 @@
+organization=luccasalencar
+projectKey=LuccasAlencar_TempoLivreAPI-Testes
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.66685
+dashboardUrl=https://sonarcloud.io/dashboard?id=LuccasAlencar_TempoLivreAPI-Testes
+ceTaskId=AZkBW3nsHA8MxMgIqJAU
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZkBW3nsHA8MxMgIqJAU

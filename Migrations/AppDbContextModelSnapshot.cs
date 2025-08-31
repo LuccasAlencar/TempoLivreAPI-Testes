@@ -26,252 +26,198 @@ namespace TempoLivreAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_abrigo");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CapacidadeMax")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("capacidade_max");
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Contato")
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("contato");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<int?>("DisponibilidadeAtual")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("disponibilidade_atual");
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Endereco")
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)")
-                        .HasColumnName("endereco");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<double?>("Latitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("latitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double?>("Longitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("longitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("nome");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Abrigo");
+                    b.ToTable("Abrigos");
                 });
 
             modelBuilder.Entity("TempoLivreAPI.Models.Alerta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_alerta");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataEmissao")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("data_emissao");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<double?>("Latitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("latitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double?>("Longitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("longitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<string>("Mensagem")
-                        .HasMaxLength(255)
-                        .HasColumnType("NVARCHAR2(255)")
-                        .HasColumnName("mensagem");
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("NivelAlerta")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
-                        .HasColumnName("nivel_alerta");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
-                        .HasColumnName("status");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("TipoEvento")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("tipo_evento");
+                        .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_usuario");
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Alerta");
+                    b.ToTable("Alertas");
                 });
 
             modelBuilder.Entity("TempoLivreAPI.Models.LeituraSensor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_leitura");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataHora")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("data_hora");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<int>("SensorId")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_sensor");
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("UnidadeMedida")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
-                        .HasColumnName("unidade_medida");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<double>("ValorLido")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("valor_lido");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SensorId");
 
-                    b.ToTable("LeituraSensor");
+                    b.ToTable("Leituras");
                 });
 
             modelBuilder.Entity("TempoLivreAPI.Models.LocalizacaoUsuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_localizacao");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataHoraRegistro")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("data_hora_registro");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("latitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("longitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_usuario");
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("LocalizacaoUsuario");
+                    b.ToTable("Localizacoes");
                 });
 
             modelBuilder.Entity("TempoLivreAPI.Models.OcorrenciaColaborativa", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_ocorrencia");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataEnvio")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("data_envio");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(255)
-                        .HasColumnType("NVARCHAR2(255)")
-                        .HasColumnName("descricao");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<double?>("Latitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("latitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double?>("Longitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("longitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<string>("Status")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
-                        .HasColumnName("status");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("TipoOcorrencia")
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("tipo_ocorrencia");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_usuario");
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("OcorrenciaColaborativa");
+                    b.ToTable("Ocorrencias");
                 });
 
             modelBuilder.Entity("TempoLivreAPI.Models.RotasSeguras", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_rota");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AbrigoDestinoId")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_abrigo_destino");
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<double?>("DestinoLatitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("destino_latitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double?>("DestinoLongitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("destino_longitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double?>("OrigemLatitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("origem_latitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double?>("OrigemLongitude")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("origem_longitude");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<string>("TipoRota")
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("tipo_rota");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_usuario");
+                        .HasColumnType("NUMBER(10)");
 
                     b.HasKey("Id");
 
@@ -286,72 +232,56 @@ namespace TempoLivreAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_sensor");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DataInstalacao")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("data_instalacao");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<double?>("LocalizacaoLat")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("localizacao_lat");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<double?>("LocalizacaoLong")
-                        .HasColumnType("BINARY_DOUBLE")
-                        .HasColumnName("localizacao_long");
+                        .HasColumnType("BINARY_DOUBLE");
 
                     b.Property<string>("Status")
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
-                        .HasColumnName("status");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("TipoSensor")
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("tipo_sensor");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sensor");
+                    b.ToTable("Sensors");
                 });
 
             modelBuilder.Entity("TempoLivreAPI.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasColumnName("id_usuario");
+                        .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataCadastro")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("data_cadastro");
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("email");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("nome");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)")
-                        .HasColumnName("senha");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("TempoLivreAPI.Models.Alerta", b =>
@@ -359,8 +289,7 @@ namespace TempoLivreAPI.Migrations
                     b.HasOne("TempoLivreAPI.Models.Usuario", "Usuario")
                         .WithMany("Alertas")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Usuario");
                 });

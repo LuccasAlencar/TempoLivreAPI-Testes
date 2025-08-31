@@ -1,0 +1,1 @@
+fRPA:\RiderProjects\TempoLivreAPIC-Testes\TempoLivreAPI-Testes\TempoLivreAPI.csproj¢net8.0òCSharp12

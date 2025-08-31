@@ -13,19 +13,20 @@ namespace TempoLivreAPI.Endpoints
             app.MapGet("/leituras", async (AppDbContext context) =>
             {
                 var items = await context.Leituras
-                    .Select(l => new LeituraReadDto
+                    .Select(l => new LeituraSensorReadDto
                     {
                         Id = l.Id,
                         SensorId = l.SensorId,
-                        Valor = l.Valor,
-                        DataHora = l.DataHora
+                        ValorLido = l.ValorLido,
+                        DataHora = l.DataHora,
+                        UnidadeMedida = l.UnidadeMedida
                     })
                     .ToListAsync();
                 return Results.Ok(items);
             })
             .WithName("GetLeituras")
             .WithTags(Constants.Leituras)
-            .Produces<List<LeituraReadDto>>(StatusCodes.Status200OK)
+            .Produces<List<LeituraSensorReadDto>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
             app.MapGet("/leituras/{id}", async (int id, AppDbContext context) =>
@@ -33,59 +34,63 @@ namespace TempoLivreAPI.Endpoints
                 var l = await context.Leituras.FindAsync(id);
                 return l == null
                     ? Results.NotFound()
-                    : Results.Ok(new LeituraReadDto
+                    : Results.Ok(new LeituraSensorReadDto
                     {
                         Id = l.Id,
                         SensorId = l.SensorId,
-                        Valor = l.Valor,
-                        DataHora = l.DataHora
+                        ValorLido = l.ValorLido,
+                        DataHora = l.DataHora,
+                        UnidadeMedida = l.UnidadeMedida
                     });
             })
             .WithName("GetLeituraById")
             .WithTags(Constants.Leituras)
-            .Produces<LeituraReadDto>(StatusCodes.Status200OK)
+            .Produces<LeituraSensorReadDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapPost("/leituras", async (LeituraCreateDto dto, AppDbContext context) =>
+            app.MapPost("/leituras", async (LeituraSensorCreateDto dto, AppDbContext context) =>
             {
-                var l = new Leitura
+                var l = new LeituraSensor
                 {
                     SensorId = dto.SensorId,
-                    Valor = dto.Valor,
-                    DataHora = DateTime.UtcNow
+                    ValorLido = dto.ValorLido,
+                    DataHora = DateTime.UtcNow,
+                    UnidadeMedida = dto.UnidadeMedida
                 };
                 context.Leituras.Add(l);
                 await context.SaveChangesAsync();
 
-                var readDto = new LeituraReadDto
+                var readDto = new LeituraSensorReadDto
                 {
                     Id = l.Id,
                     SensorId = l.SensorId,
-                    Valor = l.Valor,
-                    DataHora = l.DataHora
+                    ValorLido = l.ValorLido,
+                    DataHora = l.DataHora,
+                    UnidadeMedida = l.UnidadeMedida
                 };
                 return Results.Created($"/leituras/{l.Id}", readDto);
             })
             .WithName("CreateLeitura")
             .WithTags(Constants.Leituras)
-            .Accepts<LeituraCreateDto>(Constants.ApplicationJson)
-            .Produces<LeituraReadDto>(StatusCodes.Status201Created)
+            .Accepts<LeituraSensorCreateDto>(Constants.ApplicationJson)
+            .Produces<LeituraSensorReadDto>(StatusCodes.Status201Created)
             .WithOpenApi();
 
-            app.MapPut("/leituras/{id}", async (int id, LeituraUpdateDto dto, AppDbContext context) =>
+            app.MapPut("/leituras/{id}", async (int id, LeituraSensorUpdateDto dto, AppDbContext context) =>
             {
                 var l = await context.Leituras.FindAsync(id);
                 if (l == null) return Results.NotFound();
 
-                l.Valor = dto.Valor;
+                l.ValorLido = dto.ValorLido;
+                l.UnidadeMedida = dto.UnidadeMedida;
                 await context.SaveChangesAsync();
 
                 return Results.NoContent();
             })
             .WithName("UpdateLeitura")
             .WithTags(Constants.Leituras)
-            .Accepts<LeituraUpdateDto>(Constants.ApplicationJson)
+            .Accepts<LeituraSensorUpdateDto>(Constants.ApplicationJson)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();

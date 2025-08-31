@@ -5,14 +5,14 @@ services:
       dockerfile: Dockerfile
     container_name: oracle-db
     environment:
-      - ORACLE_PASSWORD=TEMPOLIVREAPI12345
+      - ORACLE_PASSWORD=${DOCKER_ORACLE_PASSWORD}
       - TZ=America/Sao_Paulo
     ports:
       - "1521:1521"
     volumes:
       - oracle-data:/opt/oracle/oradata
     healthcheck:
-      test: ["CMD", "bash", "-lc", "echo 'SELECT 1 FROM DUAL;' | sqlplus TEMPOLIVREAPI12345/TEMPOLIVREAPI12345@//localhost:1521/XE as sysdba"]
+      test: ["CMD", "bash", "-lc", "echo 'SELECT 1 FROM DUAL;' | sqlplus ${DOCKER_ORACLE_USER}/${DOCKER_ORACLE_PASSWORD}@//localhost:1521/XE as sysdba"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -27,7 +27,11 @@ services:
       oracle-db:
         condition: service_healthy
     environment:
-      - ConnectionStrings__OracleConnection=User Id=TEMPOLIVREAPI;Password=TEMPOLIVREAPI12345;Data Source=oracle-db:1521/XE;
+      - ORACLE_USER=${DOCKER_ORACLE_USER}
+      - ORACLE_PASSWORD=${DOCKER_ORACLE_PASSWORD}
+      - ORACLE_HOST=${DOCKER_ORACLE_HOST}
+      - ORACLE_PORT=${DOCKER_ORACLE_PORT}
+      - ORACLE_SERVICE=${DOCKER_ORACLE_SERVICE}
       - ASPNETCORE_ENVIRONMENT=Development
       - TZ=America/Sao_Paulo
     ports:

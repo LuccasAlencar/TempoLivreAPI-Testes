@@ -1,5 +1,3 @@
-// Data/AppDbContext.cs
-
 using Microsoft.EntityFrameworkCore;
 using TempoLivreAPI.Models;
 
@@ -23,9 +21,6 @@ namespace TempoLivreAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Removido UseOracleIdentityColumn() para evitar erro.
-            // O Oracle EF Core criará as colunas IDENTITY automaticamente para chaves inteiras.
-
             // Configurações de relacionamento
 
             modelBuilder.Entity<LocalizacaoUsuario>()
@@ -63,6 +58,8 @@ namespace TempoLivreAPI.Data
                 .WithMany(u => u.Ocorrencias)
                 .HasForeignKey(o => o.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

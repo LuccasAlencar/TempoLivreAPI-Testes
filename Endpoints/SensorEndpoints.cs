@@ -12,12 +12,15 @@ namespace TempoLivreAPI.Endpoints
         {
             app.MapGet("/sensors", async (AppDbContext context) =>
             {
-                var items = await context.Sensores
+                var items = await context.Sensors
                     .Select(s => new SensorReadDto
                     {
                         Id = s.Id,
-                        Tipo = s.Tipo,
-                        Localizacao = s.Localizacao
+                        TipoSensor = s.TipoSensor,
+                        LocalizacaoLat = s.LocalizacaoLat,
+                        LocalizacaoLong = s.LocalizacaoLong,
+                        Status = s.Status,
+                        DataInstalacao = s.DataInstalacao
                     })
                     .ToListAsync();
                 return Results.Ok(items);
@@ -29,14 +32,17 @@ namespace TempoLivreAPI.Endpoints
 
             app.MapGet("/sensors/{id}", async (int id, AppDbContext context) =>
             {
-                var s = await context.Sensores.FindAsync(id);
+                var s = await context.Sensors.FindAsync(id);
                 return s == null
                     ? Results.NotFound()
                     : Results.Ok(new SensorReadDto
                     {
                         Id = s.Id,
-                        Tipo = s.Tipo,
-                        Localizacao = s.Localizacao
+                        TipoSensor = s.TipoSensor,
+                        LocalizacaoLat = s.LocalizacaoLat,
+                        LocalizacaoLong = s.LocalizacaoLong,
+                        Status = s.Status,
+                        DataInstalacao = s.DataInstalacao
                     });
             })
             .WithName("GetSensorById")
@@ -49,17 +55,23 @@ namespace TempoLivreAPI.Endpoints
             {
                 var s = new Sensor
                 {
-                    Tipo = dto.Tipo,
-                    Localizacao = dto.Localizacao
+                    TipoSensor = dto.TipoSensor,
+                    LocalizacaoLat = dto.LocalizacaoLat,
+                    LocalizacaoLong = dto.LocalizacaoLong,
+                    Status = dto.Status,
+                    DataInstalacao = dto.DataInstalacao
                 };
-                context.Sensores.Add(s);
+                context.Sensors.Add(s);
                 await context.SaveChangesAsync();
 
                 var readDto = new SensorReadDto
                 {
                     Id = s.Id,
-                    Tipo = s.Tipo,
-                    Localizacao = s.Localizacao
+                    TipoSensor = s.TipoSensor,
+                    LocalizacaoLat = s.LocalizacaoLat,
+                    LocalizacaoLong = s.LocalizacaoLong,
+                    Status = s.Status,
+                    DataInstalacao = s.DataInstalacao
                 };
                 return Results.Created($"/sensors/{s.Id}", readDto);
             })
@@ -71,11 +83,14 @@ namespace TempoLivreAPI.Endpoints
 
             app.MapPut("/sensors/{id}", async (int id, SensorUpdateDto dto, AppDbContext context) =>
             {
-                var s = await context.Sensores.FindAsync(id);
+                var s = await context.Sensors.FindAsync(id);
                 if (s == null) return Results.NotFound();
 
-                s.Tipo = dto.Tipo;
-                s.Localizacao = dto.Localizacao;
+                s.TipoSensor = dto.TipoSensor;
+                s.LocalizacaoLat = dto.LocalizacaoLat;
+                s.LocalizacaoLong = dto.LocalizacaoLong;
+                s.Status = dto.Status;
+                s.DataInstalacao = dto.DataInstalacao;
                 await context.SaveChangesAsync();
 
                 return Results.NoContent();
@@ -89,10 +104,10 @@ namespace TempoLivreAPI.Endpoints
 
             app.MapDelete("/sensors/{id}", async (int id, AppDbContext context) =>
             {
-                var s = await context.Sensores.FindAsync(id);
+                var s = await context.Sensors.FindAsync(id);
                 if (s == null) return Results.NotFound();
 
-                context.Sensores.Remove(s);
+                context.Sensors.Remove(s);
                 await context.SaveChangesAsync();
                 return Results.NoContent();
             })
